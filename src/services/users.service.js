@@ -75,9 +75,9 @@ export const createUserService = async (body) => {
 
 export const registerService = async (user) => {
     try {
-        const link = `http://localhost:3000/api/v1/auth/active/${user[0].id}`
+        const link = `http://localhost:3000/api/v1/auth/active/${user.id}`
 
-        await sendMail(user[0].email, "cative link", link)
+        await sendMail(user.email, "cative link", link)
     } catch (error) {
         logger.error(error)
         throw new Error(error)
@@ -112,12 +112,9 @@ export const activeUserService = async (id) => {
         if (activeUser.length === 0) {
             throw new AppError('uset not found', 404)
         }
-        const data = [id]
-        const query = `
-            UPDATE users set is_active = true WHERE id = $1 RETURNING *
-        `
-        const updateUser = await pool.query(query, data)
-        return updateUser.rows
+
+        const updateUser = await Users.findByIdAndUpdate(id, {is_active: true})
+        return updateUser
 
     } catch (error) {
         throw new Error(error);
