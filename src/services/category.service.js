@@ -12,19 +12,19 @@ export const getCategorySevice = async (type, data = "") => {
                 return filter;
             case "id":
                 const byId = await Category.findById(data)
-                if(!byId._id){
+                if(byId.length === 0){
                     throw new AppError('category not found', 404)
                 }
                 return byId
             case "name":
                 const byName = await Category.find({name: data})
-                if(!byName._id){
+                if(byName.length === 0){
                     throw new AppError('category name not found', 404)
                 }
                 return byName
             case "tag":
                 const tag = await Category.find({tag: data})
-                if(!byName._id){
+                if(tag.length === 0){
                     throw new AppError('category tag not found', 404)
                 }
                 return tag;
@@ -33,8 +33,6 @@ export const getCategorySevice = async (type, data = "") => {
         throw new Error(error)
     }
 }
-
-
 
 export const createCategoryService = async (category) => {
     try {
