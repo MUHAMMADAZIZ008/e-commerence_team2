@@ -3,7 +3,8 @@ import morgan from "morgan"
 import { config } from "dotenv";
 
 import {
-    categoriesRouter
+    categoriesRouter,
+    usersRouter
 } from "./routers/index.js";
 
 import { logger } from "./utils/logger.js";
@@ -19,7 +20,7 @@ app.use(morgan('dev'))
 
 
 // app.use("/api/v1/auth", authRoutes)
-// app.use('/api/v1/users', usersRouter)
+app.use('/api/v1/users', usersRouter)
 // app.use('/api/v1/addressess', addressessRouter)
 app.use('/api/v1/categories', categoriesRouter)
 
