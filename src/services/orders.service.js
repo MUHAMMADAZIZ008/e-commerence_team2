@@ -1,54 +1,48 @@
-import pool from '../databases/index.js'
-export async function getAllOrders() {
+import mongoose from 'mongoose';
+import { Orders } from '../schemas/index.js'; 
+
+export const getAllOrders = async () => {
     try {
-        const data = await pool.query(`SELECT * FROM orders`)
-        if (!data.rows) {
-            throw new Error('Orders not found')
+        const data = await Orders.find(); 
+        if (!data.length) {
+            throw new Error('Orders not found');
         }
-        return data.rows
+        return data;
     } catch (error) {
-        throw new Error(error)
+        throw new Error(error.message);
     }
 }
-export async function getOrdersById(id) {
+
+export const getOrdersById = async (id) => {
     try {
-        const data = await pool.query(`SELECT * FROM orders WHERE id=$1`, [id])
-        if (!data.rows[0]) {
-            throw new Error('Orders not found')
+        const data = await Orders.findById(id); 
+        if (!data) {
+            throw new Error('Order not found');
         }
-        return data.rows[0]
+        return data;
     } catch (error) {
-        throw new Error(error)
+        throw new Error(error.message);
     }
 }
-export async function createOrders(order) {
+
+export const createOrders = async (order) => {
     try {
-        const data = await pool.query(
-            `INSERT INTO orders(
-                user_id,
-                cart_id
-            ) VALUES($1,$2) RETURNING *`,
-            [order.user_id, order.cart_id],
-        )
-        if (!data.rows[0]) {
-            throw new Error('Order not created with some reason')
-        }
-        return data.rows[0]
+        const newOrder = new Orders(order); 
+        const data = await newOrder.save(); 
+        return data;
     } catch (error) {
-        throw new Error(error)
+        throw new Error(error.message);
     }
 }
-export async function deleteOrders(id) {
+
+export const deleteOrders = async (id) => {
     try {
-        const data = await pool.query(
-            `DELETE FROM orders WHERE id=$1 RETURNING *`,
-            [id],
-        )
-        if (!data.rows[0]) {
-            throw new Error('Order not deleted with some reason')
+        const data = await Orders.findByIdAndDelete(id); 
+        if (!data) {
+            throw new Error('Order not deleted for some reason');
         }
-        return data.rows[0]
+        return data;
     } catch (error) {
-        throw new Error(error)
+        throw new Error(error.message);
     }
 }
