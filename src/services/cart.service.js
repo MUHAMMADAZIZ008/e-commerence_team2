@@ -1,65 +1,80 @@
-import mongoose from 'mongoose';
-import { Cart } from '../models/cart.js'; 
+import mongoose from "mongoose";
+import { Carts } from "../schemas/index.js";
+import { AppError } from "../utils/index.js";
 
-export const getAllCart = async () => {
-    try {
-        const data = await Cart.find(); 
-        if (!data.length) {
-            throw new Error('Carts not found');
+export const cartService = {
+    getAll: async () => {
+        try {
+            const data = await Carts.find().populate("user_id");
+            if (!data.length) {
+                throw new AppError("No carts found", 404);
+            }
+            return data;
+        } catch (error) {
+            throw new AppError(error.message || "Failed to fetch carts", 500);
         }
-        return data;
-    } catch (error) {
-        throw new Error(error.message);
-    }
-}
+    },
 
-export const getCartById = async (id) => {
-    try {
-        const data = await Cart.findById(id); 
-        if (!data) {
-            throw new Error('Cart not found');
+    getById: async (id) => {
+        try {
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+                throw new AppError("Invalid Cart ID", 400);
+            }
+
+            const data = await Carts.findById(id).populate("user_id");
+            if (!data) {
+                throw new AppError("Cart not found", 404);
+            }
+            return data;
+        } catch (error) {
+            throw new AppError(error.message || "Failed to fetch cart by ID", 500);
         }
-        return data;
-    } catch (error) {
-        throw new Error(error.message);
-    }
-}
+    },
 
-export const createCart = async (cart) => {
-    try {
-        const newCart = new Cart(cart); 
-        const data = await newCart.save(); 
-        return data;
-    } catch (error) {
-        throw new Error(error.message);
-    }
-}
-
-export const updateCartById = async (id, cart) => {
-    try {
-        const currentCart = await getCartById(id); 
-        const update = await Cart.findByIdAndUpdate(
-            id,
-            { total: cart.total || currentCart.total }, 
-            { new: true } 
-        );
-        if (!update) {
-            throw new Error('Cart not updated for some reason');
+    create: async (cartData) => {
+        try {
+            const newCart = new Carts(cartData);
+            const data = await newCart.save();
+            return data;
+        } catch (error) {
+            throw new AppError(error.message || "Failed to create cart", 500);
         }
-        return update;
-    } catch (error) {
-        throw new Error(error.message);
-    }
-}
+    },
 
-export const deleteCartById = async (id) => {
-    try {
-        const deleted = await Cart.findByIdAndDelete(id); 
-        if (!deleted) {
-            throw new Error('Cart not deleted for some reason');
+    updateById: async (id, updateData) => {
+        try {
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+                throw new AppError("Invalid Cart ID", 400);
+            }
+
+            const updatedCart = await Carts.findByIdAndUpdate(
+                id,
+                updateData,
+                { new: true, runValidators: true } 
+            );
+
+            if (!updatedCart) {
+                throw new AppError("Cart not found or failed to update", 404);
+            }
+            return updatedCart;
+        } catch (error) {
+            throw new AppError(error.message || "Failed to update cart", 500);
         }
-        return deleted;
-    } catch (error) {
-        throw new Error(error.message);
-    }
-}
+    },
+
+    deleteById: async (id) => {
+        try {
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+                throw new AppError("Invalid Cart ID", 400);
+            }
+
+            const deletedCart = await Carts.findByIdAndDelete(id);
+            if (!deletedCart) {
+                throw new AppError("Cart not found or failed to delete", 404);
+            }
+            return deletedCart;
+        } catch (error) {
+            throw new AppError(error.message || "Failed to delete cart", 500);
+        }
+    },
+};

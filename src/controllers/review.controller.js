@@ -1,12 +1,12 @@
-import { cartService } from "../services/index.js";
+import { reviewService } from "../services/index.js";
 import { logger } from "../utils/index.js";
 
-export const getAllCartsController = async (req, res, next) => {
+export const getAllReviewsController = async (req, res, next) => {
     try {
-        const carts = await cartService.getAll();
+        const reviews = await reviewService.getAll();
         return res.status(200).send({
             message: "success",
-            data: carts,
+            data: reviews,
         });
     } catch (error) {
         logger.error(error);
@@ -14,13 +14,13 @@ export const getAllCartsController = async (req, res, next) => {
     }
 };
 
-export const getCartByIdController = async (req, res, next) => {
+export const getReviewByIdController = async (req, res, next) => {
     try {
         const id = req.params.id;
-        const cart = await cartService.getById(id);
+        const review = await reviewService.getById(id);
         return res.status(200).send({
             message: "success",
-            data: cart,
+            data: review,
         });
     } catch (error) {
         logger.error(error);
@@ -28,13 +28,13 @@ export const getCartByIdController = async (req, res, next) => {
     }
 };
 
-export const createCartController = async (req, res, next) => {
+export const createReviewController = async (req, res, next) => {
     try {
         const body = req.body;
-        const newCart = await cartService.create(body);
+        const newReview = await reviewService.create(body);
         return res.status(201).send({
             message: "created",
-            data: newCart,
+            data: newReview.id,
         });
     } catch (error) {
         logger.error(error);
@@ -42,21 +42,21 @@ export const createCartController = async (req, res, next) => {
     }
 };
 
-export const updateCartController = async (req, res, next) => {
+export const updateReviewController = async (req, res, next) => {
     try {
         const id = req.params.id;
         const body = req.body;
-        const updatedCart = await cartService.updateById(id, body);
+        const updatedReview = await reviewService.update(id, body);
 
-        if (!updatedCart) {
+        if (!updatedReview) {
             return res.status(404).send({
-                message: "Cart not found",
+                message: "review not found",
             });
         }
 
         return res.status(200).send({
             message: "updated",
-            data: updatedCart,
+            data: updatedReview.id,
         });
     } catch (error) {
         logger.error(error);
@@ -64,20 +64,20 @@ export const updateCartController = async (req, res, next) => {
     }
 };
 
-export const deleteCartController = async (req, res, next) => {
+export const deleteReviewController = async (req, res, next) => {
     try {
         const id = req.params.id;
-        const deletedCart = await cartService.deleteById(id);
+        const deletedReview = await reviewService.delete(id);
 
-        if (!deletedCart) {
+        if (!deletedReview) {
             return res.status(404).send({
-                message: "Cart not found",
+                message: "review not found",
             });
         }
 
         return res.status(200).send({
             message: "deleted",
-            data: deletedCart,
+            data: deletedReview.id,
         });
     } catch (error) {
         logger.error(error);

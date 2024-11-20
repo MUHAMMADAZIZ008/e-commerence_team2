@@ -1,12 +1,12 @@
-import { cartService } from "../services/index.js";
+import { socialProfileService } from "../services/index.js";
 import { logger } from "../utils/index.js";
 
-export const getAllCartsController = async (req, res, next) => {
+export const getAllSocialProfilesController = async (req, res, next) => {
     try {
-        const carts = await cartService.getAll();
+        const profiles = await socialProfileService.getAll();
         return res.status(200).send({
             message: "success",
-            data: carts,
+            data: profiles,
         });
     } catch (error) {
         logger.error(error);
@@ -14,13 +14,13 @@ export const getAllCartsController = async (req, res, next) => {
     }
 };
 
-export const getCartByIdController = async (req, res, next) => {
+export const getSocialProfileByIdController = async (req, res, next) => {
     try {
         const id = req.params.id;
-        const cart = await cartService.getById(id);
+        const profile = await socialProfileService.getById(id);
         return res.status(200).send({
             message: "success",
-            data: cart,
+            data: profile,
         });
     } catch (error) {
         logger.error(error);
@@ -28,13 +28,13 @@ export const getCartByIdController = async (req, res, next) => {
     }
 };
 
-export const createCartController = async (req, res, next) => {
+export const createSocialProfileController = async (req, res, next) => {
     try {
         const body = req.body;
-        const newCart = await cartService.create(body);
+        const newProfile = await socialProfileService.create(body);
         return res.status(201).send({
             message: "created",
-            data: newCart,
+            data: newProfile.id,
         });
     } catch (error) {
         logger.error(error);
@@ -42,21 +42,21 @@ export const createCartController = async (req, res, next) => {
     }
 };
 
-export const updateCartController = async (req, res, next) => {
+export const updateSocialProfileController = async (req, res, next) => {
     try {
         const id = req.params.id;
         const body = req.body;
-        const updatedCart = await cartService.updateById(id, body);
+        const updatedProfile = await socialProfileService.update(id, body);
 
-        if (!updatedCart) {
+        if (!updatedProfile) {
             return res.status(404).send({
-                message: "Cart not found",
+                message: "social profile not found",
             });
         }
 
         return res.status(200).send({
             message: "updated",
-            data: updatedCart,
+            data: updatedProfile.id,
         });
     } catch (error) {
         logger.error(error);
@@ -64,20 +64,20 @@ export const updateCartController = async (req, res, next) => {
     }
 };
 
-export const deleteCartController = async (req, res, next) => {
+export const deleteSocialProfileController = async (req, res, next) => {
     try {
         const id = req.params.id;
-        const deletedCart = await cartService.deleteById(id);
+        const deletedProfile = await socialProfileService.delete(id);
 
-        if (!deletedCart) {
+        if (!deletedProfile) {
             return res.status(404).send({
-                message: "Cart not found",
+                message: "social profile not found",
             });
         }
 
         return res.status(200).send({
             message: "deleted",
-            data: deletedCart,
+            data: deletedProfile.id,
         });
     } catch (error) {
         logger.error(error);

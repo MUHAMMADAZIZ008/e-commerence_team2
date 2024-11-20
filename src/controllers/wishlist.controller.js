@@ -1,12 +1,12 @@
-import { cartService } from "../services/index.js";
+import { wishlistService } from "../services/index.js";
 import { logger } from "../utils/index.js";
 
-export const getAllCartsController = async (req, res, next) => {
+export const getAllWishlistsController = async (req, res, next) => {
     try {
-        const carts = await cartService.getAll();
+        const wishlists = await wishlistService.getAll();
         return res.status(200).send({
             message: "success",
-            data: carts,
+            data: wishlists,
         });
     } catch (error) {
         logger.error(error);
@@ -14,13 +14,13 @@ export const getAllCartsController = async (req, res, next) => {
     }
 };
 
-export const getCartByIdController = async (req, res, next) => {
+export const getWishlistByIdController = async (req, res, next) => {
     try {
         const id = req.params.id;
-        const cart = await cartService.getById(id);
+        const wishlist = await wishlistService.getById(id);
         return res.status(200).send({
             message: "success",
-            data: cart,
+            data: wishlist,
         });
     } catch (error) {
         logger.error(error);
@@ -28,13 +28,13 @@ export const getCartByIdController = async (req, res, next) => {
     }
 };
 
-export const createCartController = async (req, res, next) => {
+export const createWishlistController = async (req, res, next) => {
     try {
         const body = req.body;
-        const newCart = await cartService.create(body);
+        const newWishlist = await wishlistService.create(body);
         return res.status(201).send({
             message: "created",
-            data: newCart,
+            data: newWishlist.id,
         });
     } catch (error) {
         logger.error(error);
@@ -42,21 +42,21 @@ export const createCartController = async (req, res, next) => {
     }
 };
 
-export const updateCartController = async (req, res, next) => {
+export const updateWishlistController = async (req, res, next) => {
     try {
         const id = req.params.id;
         const body = req.body;
-        const updatedCart = await cartService.updateById(id, body);
+        const updatedWishlist = await wishlistService.update(id, body);
 
-        if (!updatedCart) {
+        if (!updatedWishlist) {
             return res.status(404).send({
-                message: "Cart not found",
+                message: "wishlist not found",
             });
         }
 
         return res.status(200).send({
             message: "updated",
-            data: updatedCart,
+            data: updatedWishlist.id,
         });
     } catch (error) {
         logger.error(error);
@@ -64,20 +64,20 @@ export const updateCartController = async (req, res, next) => {
     }
 };
 
-export const deleteCartController = async (req, res, next) => {
+export const deleteWishlistController = async (req, res, next) => {
     try {
         const id = req.params.id;
-        const deletedCart = await cartService.deleteById(id);
+        const deletedWishlist = await wishlistService.delete(id);
 
-        if (!deletedCart) {
+        if (!deletedWishlist) {
             return res.status(404).send({
-                message: "Cart not found",
+                message: "wishlist not found",
             });
         }
 
         return res.status(200).send({
             message: "deleted",
-            data: deletedCart,
+            data: deletedWishlist.id,
         });
     } catch (error) {
         logger.error(error);
