@@ -11,7 +11,7 @@ import { authGuard, checkSchema, roleGuard } from '../middlewares/index.js'
 import { categoryProfileSchema } from '../validators/index.js'
 
 export const categoriesRouter = express.Router()
-
+// TODO: VALIDATIONLAR QOYILMAGAN....
 categoriesRouter.get('/', getAllCategoryController)
 categoriesRouter.get('/filter', getFilterCategoryController)
 categoriesRouter.get('/:id', getCategoryByIdController)
