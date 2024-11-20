@@ -3,6 +3,7 @@ import { createOrderController, deleteOrderByIdController, getAllOrdersControlle
 
 
 export const orderRouter = Router()
+// TODO: VALIDATION YO`Q....
 orderRouter.get('/',  getAllOrdersController)
 orderRouter.get('/:id', getOrderByIdController)
 orderRouter.post('/', createOrderController)
