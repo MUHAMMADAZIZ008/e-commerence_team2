@@ -6,3 +6,6 @@ export * from './wishlist.service.js'
 export * from './review.service.js'
 export * from './cartItem.service.js'
 export * from './social_profile.service.js'
+export * from './orders.service.js'
+export * from './cart.service.js'
+
