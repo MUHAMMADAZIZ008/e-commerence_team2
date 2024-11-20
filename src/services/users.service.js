@@ -64,6 +64,7 @@ export const createUserService = async (body) => {
         if (currentPhone.length > 0) {
             throw new AppError("phone number already exist")
         }
+        // TODO: new qani yana bir bor
         const newData = await Users(body)
         await newData.save()
         return newData

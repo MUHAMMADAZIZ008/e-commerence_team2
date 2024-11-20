@@ -25,6 +25,7 @@ export const getAddressesByIdService = async (data) =>{
 export const createAddressesService = async (data) =>{
     try {
         
+        // TODO: new qani brodarla
         const newData = await Addresses(data)
         
         await newData.save()

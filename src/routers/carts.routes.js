@@ -2,7 +2,7 @@ import { Router } from 'express'
 import { createCartController, deleteCartController, getAllCartsController, getCartByIdController, updateCartController } from '../controllers/index.js'
 
 export const cartsRouter = Router()
-
+// TODO: route yozilgan middlewarelarni qoshishni unitibsizlar
 cartsRouter.get('/', getAllCartsController)
 cartsRouter.get('/:id',  getCartByIdController)
 cartsRouter.post('/',  createCartController)

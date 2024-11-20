@@ -36,6 +36,7 @@ export const getCategorySevice = async (type, data = "") => {
 
 export const createCategoryService = async (category) => {
     try {
+        // TODO: bu yerdayam yana new qolib ketibi
         const newCategories = await Category(category)
         await newCategories.save()
         return newCategories
@@ -58,7 +59,6 @@ export const updateCategoryService = async (category, id) => {
 
 export const deleteCategoryService = async (id) => {
     try {
-        
         const updateCategories = await Category.findByIdAndDelete(id)
         return updateCategories
     } catch (error) {
