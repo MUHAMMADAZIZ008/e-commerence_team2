@@ -11,7 +11,9 @@ import {
     wishlistRouter,
     reviewRouter,
     cartItemRouter,
-    socialProfileRouter
+    socialProfileRouter,
+    cartsRouter,
+    orderRouter
 } from "./routers/index.js";
 
 import { logger } from "./utils/logger.js";
@@ -33,6 +35,9 @@ app.use('/api/v1/wishlist', wishlistRouter)
 app.use('/api/v1/review', reviewRouter)
 app.use('/api/v1/cartItem', cartItemRouter)
 app.use('/api/v1/socialProfile', socialProfileRouter)
+app.use('/api/v1/cart', cartsRouter)
+app.use('/api/v1/order', orderRouter)
+
 
 
 app.use((err, req, res, next) => {
