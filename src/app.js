@@ -6,7 +6,12 @@ import {
     addressessRouter,
     authRoutes,
     categoriesRouter,
-    usersRouter
+    productsRouter,
+    usersRouter,
+    wishlistRouter,
+    reviewRouter,
+    cartItemRouter,
+    socialProfileRouter
 } from "./routers/index.js";
 
 import { logger } from "./utils/logger.js";
@@ -19,13 +24,15 @@ app.use(express.urlencoded({ extended: true }))
 app.use(morgan('dev'))
 
 
-
-
 app.use("/api/v1/auth", authRoutes)
 app.use('/api/v1/users', usersRouter)
 app.use('/api/v1/addressess', addressessRouter)
 app.use('/api/v1/categories', categoriesRouter)
-
+app.use('/api/v1/products', productsRouter)
+app.use('/api/v1/wishlist', wishlistRouter)
+app.use('/api/v1/review', reviewRouter)
+app.use('/api/v1/cartItem', cartItemRouter)
+app.use('/api/v1/socialProfile', socialProfileRouter)
 
 
 app.use((err, req, res, next) => {
